@@ -12,16 +12,16 @@
         "-Wsign-conversion",
         "-std=c++17",
         "src/**.cpp",
-        "${file}",
+        "main.cpp",
         "-o",
-        "${fileDirname}\\${fileBasenameNoExtension}.exe",
+        "${fileDirname}\\main.exe",
         "-lmingw32",
         "-lSDL2main",
         "-lSDL2",
         "-lSDL2_ttf"
       ],
       "options": {
-        "cwd": "${fileDirname}"
+        "cwd": "C:\\Users\\14807\\workspace\\cpp\\Pong++"
       },
       "problemMatcher": ["$gcc"],
       "group": {

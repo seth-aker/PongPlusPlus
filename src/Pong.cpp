@@ -11,7 +11,9 @@ const int Pong::PADDLE_SPEED = 8;
 
 Pong::Pong(int argc, char* argv[])
     : leftScoreChanged{ true },
-    rightScoreChanged{ true }
+    rightScoreChanged{ true },
+    gameRunning{ false },
+    exit{ false }
 {
     exit = false;
     SDL_Init(SDL_INIT_EVERYTHING);
@@ -41,22 +43,24 @@ Pong::Pong(int argc, char* argv[])
     leftScore = 0;
     rightScore = 0;
 
-
+    //Make sure this does not get created before TTF_Init() ever.
+    homeScreen = new HomeScreen(renderer);
     // Array of boolean flags to determine what buttons are being pressed currently;
     buttonsPressed = { false, false, false, false };
-    // TODO: add a way to change this
-    isTwoPlayerMode = true;
 
-    exit = false;
+
 }
 
 Pong::~Pong() {
 
     SDL_DestroyTexture(fontLeftScore);
-    SDL_DestroyTexture(fontRightScore);
+    if (fontRightScore) {
+        SDL_DestroyTexture(fontRightScore);
+    }
     SDL_DestroyTexture(fontStartText);
-    if (fontWinnerText)
+    if (fontWinnerText) {
         SDL_DestroyTexture(fontWinnerText);
+    }
 
     SDL_DestroyRenderer(renderer);
     SDL_DestroyWindow(window);
@@ -66,10 +70,25 @@ Pong::~Pong() {
 
 void Pong::execute() {
     while (!exit) {
-        input();
-        update();
-        render();
-        SDL_Delay(10);
+        if (gameRunning) {
+            input();
+            update();
+            renderGameplay();
+            SDL_Delay(10);
+        }
+        else {
+            homeScreen->input(exit);
+            homeScreen->update();
+            homeScreen->render();
+            renderHomeScreen(homeScreen);
+            SDL_Delay(10);
+            if (homeScreen->multiPlayerSelected || homeScreen->singlePlayerSelected) {
+                gameRunning = true;
+                isTwoPlayerMode = homeScreen->multiPlayerSelected;
+            }
+        }
+
+
     }
 
 }
@@ -85,7 +104,7 @@ void Pong::input() {
         if (event.type == SDL_KEYDOWN) {
             switch (event.key.keysym.sym) {
             case SDLK_ESCAPE:
-                exit = true;
+                gameRunning = false;
                 break;
             case SDLK_SPACE:
                 if (ball->status == ball->READY) {
@@ -138,7 +157,7 @@ void Pong::input() {
 }
 
 void Pong::update() {
-
+    isTwoPlayerMode = homeScreen->multiPlayerSelected;
     // Change paddle position if buttonsPressed bools are true;
     if (buttonsPressed[Buttons::RightPaddleUp]) {
         rightPaddle->setY(rightPaddle->getY() - PADDLE_SPEED);
@@ -199,7 +218,7 @@ void Pong::update() {
     }
 }
 
-void Pong::render() {
+void Pong::renderGameplay() {
     //Background color
     SDL_SetRenderDrawColor(renderer, 0x0, 0x0, 0x0, 0xFF);
     SDL_RenderClear(renderer);
@@ -301,4 +320,42 @@ void Pong::render() {
 
     SDL_RenderPresent(renderer);
 
+}
+
+void Pong::renderHomeScreen(HomeScreen* homeScreen) {
+    SDL_Color yellow{ 0xFF, 0xFF, 0x0, 0xFF };
+    SDL_SetRenderDrawColor(renderer, 0x0, 0x0, 0x0, 0xFF);
+    SDL_RenderClear(renderer);
+
+    SDL_SetRenderDrawColor(renderer, 0xFF, 0xFF, 0xFF, 0xFF);
+
+    int pongTextWidth;
+    SDL_QueryTexture(homeScreen->PONG_TEXT, nullptr, nullptr, &pongTextWidth, nullptr);
+    renderTexture(homeScreen->PONG_TEXT, renderer, SCREEN_WIDTH / 2 - pongTextWidth / 2, SCREEN_HEIGHT / 5);
+
+
+    // Render Single Player Text
+    renderTexture(
+        homeScreen->singlePlayerBtn->getTexture(),
+        renderer,
+        homeScreen->singlePlayerBtn->getX(),
+        homeScreen->singlePlayerBtn->getY()
+    );
+
+    // Render Multi Player Text
+    renderTexture(
+        homeScreen->multiPlayerBtn->getTexture(),
+        renderer,
+        homeScreen->multiPlayerBtn->getX(),
+        homeScreen->multiPlayerBtn->getY()
+    );
+
+    // Render Settings Text
+    renderTexture(
+        homeScreen->settingsBtn->getTexture(),
+        renderer,
+        homeScreen->settingsBtn->getX(),
+        homeScreen->settingsBtn->getY()
+    );
+    SDL_RenderPresent(renderer);
 }

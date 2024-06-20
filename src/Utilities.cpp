@@ -22,19 +22,19 @@ void renderTexture(SDL_Texture* texture
     , SDL_Renderer* renderer
     , int x
     , int y
-    , SDL_Rect* prevRect)
+    , SDL_Rect* clip)
 {
     SDL_Rect destRect;
     destRect.x = x;
     destRect.y = y;
 
-    if (prevRect != nullptr) {
-        destRect.w = prevRect->w;
-        destRect.h = prevRect->h;
+    if (clip != nullptr) {
+        destRect.w = clip->w;
+        destRect.h = clip->h;
     }
     else {
         SDL_QueryTexture(texture, nullptr, nullptr, &destRect.w, &destRect.h);
     }
 
-    SDL_RenderCopy(renderer, texture, prevRect, &destRect);
+    SDL_RenderCopy(renderer, texture, clip, &destRect);
 }

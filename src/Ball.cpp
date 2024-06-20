@@ -45,11 +45,11 @@ void Ball::bouncesOff(Paddle* paddle) {
     // To invert direction of ball;
     int sign = (dx <= 0 ? 1 : -1);
 
-    // TODO: Figure out why this is necessary. 
-    int relativeY = (y - paddle->getY() + BALL_SIZE);
+    // Distance in pixels from the bottom of the ball to the center of the paddle
+    double relativeY = ((y + BALL_SIZE / 2) - (paddle->getY() + (paddle->PADDLE_HEIGHT / 2)));
 
-    // TODO: Figure out what 2.14 and 75.0f represent
-    angle = (2.14f * relativeY - 75.0f);
+    // position of ball relative to the paddle, normalized to between -1 and 1 by dividing by half the hight of the paddle, then multiplied by 75deg
+    angle = (((relativeY) / (paddle->PADDLE_HEIGHT / 2.0)) * 75.0);
 
     // Convert angle to Radian, find its cos() and multiply by the speed.
     dx = sign * speed * std::cos(angle * PI / 180.0f);

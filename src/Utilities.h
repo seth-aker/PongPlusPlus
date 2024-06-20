@@ -14,6 +14,6 @@ void renderTexture(SDL_Texture* texture
     , SDL_Renderer* renderer
     , int x
     , int y
-    , SDL_Rect* prevRect = nullptr);
+    , SDL_Rect* clip = nullptr);
 
 #endif
