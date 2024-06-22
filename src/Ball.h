@@ -35,6 +35,7 @@ public:
 
     int hits; // Counts the number of hits with the right paddle;
 
+
     void launchBall();
     void bouncesOff(Paddle* paddle);
     void updateSpeed();

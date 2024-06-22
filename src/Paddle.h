@@ -14,7 +14,6 @@ public:
     int getX() const;
     int getY() const;
     void setY(int y);
-    int predict(Ball* ball);
     void AIMovement(Ball* ball);
 };
 

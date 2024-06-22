@@ -29,10 +29,26 @@ void Paddle::setY(int y) {
     this->y = y;
 }
 
-int Paddle::predict(Ball* ball) {
-    return 0;
-}
-
 void Paddle::AIMovement(Ball* ball) {
-
+    // if the ball is moving left and on the left 3/5ths of the screen.
+    if (ball->dx < 0 && ball->x < Pong::SCREEN_WIDTH * 3 / 5) {
+        // if ball's position > paddle's position + 2
+        if (ball->y + (ball->BALL_SIZE / 2) > this->getY() + PADDLE_HEIGHT / 2 + 2) {
+            this->setY(this->getY() + Pong::PADDLE_SPEED / 2);
+        }
+        // if ball's position < paddles position - 2
+        else if (ball->y + (ball->BALL_SIZE / 2) <= this->getY() + PADDLE_HEIGHT / 2 - 2) {
+            this->setY(this->getY() - Pong::PADDLE_SPEED / 2);
+        }
+    }
+    // Ball is moving to the right
+    else if (ball->dx >= 0) {
+        // Left paddle slowly moves to the center.
+        if (y + PADDLE_HEIGHT / 2 < Pong::SCREEN_HEIGHT / 2) {
+            setY(this->getY() + 2);
+        }
+        else if (y + PADDLE_HEIGHT / 2 > Pong::SCREEN_HEIGHT / 2) {
+            setY(this->getY() - 2);
+        }
+    }
 }

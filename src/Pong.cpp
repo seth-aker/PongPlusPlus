@@ -196,7 +196,7 @@ void Pong::update() {
     }
     else if (ball->collidesWith(rightPaddle)) {
         ball->bouncesOff(rightPaddle);
-        leftPaddle->predict(ball);
+
     }
 
     if (ball->wallCollision()) {
