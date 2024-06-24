@@ -18,7 +18,8 @@
         "-lmingw32",
         "-lSDL2main",
         "-lSDL2",
-        "-lSDL2_ttf"
+        "-lSDL2_ttf",
+        "-lSDL2_mixer"
       ],
       "options": {
         "cwd": "C:\\Users\\14807\\workspace\\cpp\\Pong++"

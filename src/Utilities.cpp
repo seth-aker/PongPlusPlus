@@ -1,5 +1,6 @@
 #include "Utilities.h"
 #include <SDL2/SDL_ttf.h>
+#include "MenuButton.h"
 
 SDL_Texture* renderText(const std::string& message
     , const std::string& fontFile
@@ -37,4 +38,15 @@ void renderTexture(SDL_Texture* texture
     }
 
     SDL_RenderCopy(renderer, texture, clip, &destRect);
+}
+
+bool isMouseInside(int& mouseX, int& mouseY, MenuButton* btn) {
+    if (mouseX < btn->getX() || mouseX > btn->getX() + btn->WIDTH) {
+        return false;
+    }
+    if (mouseY < btn->getY() || mouseY > btn->getY() + btn->HEIGHT) {
+        return false;
+    }
+    return true;
+
 }

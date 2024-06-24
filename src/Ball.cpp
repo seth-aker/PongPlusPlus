@@ -43,7 +43,7 @@ void Ball::bouncesOff(Paddle* paddle) {
 
     ++hits;
     // If ball is on the right side of the screen, make it go left and vice versa.
-    int sign = (this->x > Pong::SCREEN_WIDTH / 2 ? -1 : 1);
+    int sign = (this->x > Settings::gameSettings.screenWidth / 2 ? -1 : 1);
 
     // Distance in pixels from the bottom of the ball to the center of the paddle
     double relativeY = ((y + BALL_SIZE / 2) - (paddle->getY() + (paddle->PADDLE_HEIGHT / 2)));
@@ -67,7 +67,7 @@ void Ball::updateSpeed()
 
 bool Ball::wallCollision()
 {
-    return (y + dy < 0 || y + BALL_SIZE + dy >= Pong::SCREEN_HEIGHT);
+    return (y + dy < 0 || y + BALL_SIZE + dy >= Settings::gameSettings.screenHeight);
 }
 
 bool Ball::collidesWith(Paddle* paddle)
@@ -94,8 +94,8 @@ bool Ball::collidesWith(Paddle* paddle)
 }
 
 void Ball::reset() {
-    x = Pong::SCREEN_WIDTH / 2 - BALL_SIZE / 2;
-    y = Pong::SCREEN_HEIGHT / 2;
+    x = Settings::gameSettings.screenWidth / 2 - BALL_SIZE / 2;
+    y = Settings::gameSettings.screenHeight / 2;
 
     // Ball is fixed.
     dx = 0;

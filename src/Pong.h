@@ -3,8 +3,11 @@
 
 #include "Ball.h"
 #include "HomeScreen.h"
+#include "Settings.h"
+#include "SettingsScreen.h"
 
 #include <SDL2/SDL.h>
+#include <SDL2/SDL_mixer.h>
 #include <string>
 #include <array>
 
@@ -13,7 +16,9 @@ private:
     SDL_Window* window;
     SDL_Renderer* renderer;
 
-    HomeScreen* homeScreen;
+    Mix_Chunk* paddleSound;
+    Mix_Chunk* wallSound;
+
     Ball* ball;
     Paddle* leftPaddle;
     Paddle* rightPaddle;
@@ -31,7 +36,7 @@ private:
     bool leftScoreChanged;
     bool rightScoreChanged;
     bool gameRunning;
-    bool isTwoPlayerMode;
+
     bool exit;
 
     enum Buttons
@@ -44,16 +49,12 @@ private:
     std::array<bool, 4> buttonsPressed{};
 
 public:
-    static const int SCREEN_WIDTH;
-    static const int SCREEN_HEIGHT;
-    static const int PADDLE_SPEED;
-    Pong(int argc, char* argv[]);
+    bool isTwoPlayerMode;
+    Pong(bool exit, SDL_Window* window, SDL_Renderer* renderer);
     ~Pong();
-    void execute();
     void input();
     void update();
     void renderGameplay();
-    void renderHomeScreen(HomeScreen* homeScreen);
 
 };
 

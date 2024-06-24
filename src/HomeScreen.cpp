@@ -1,33 +1,23 @@
 #include "HomeScreen.h"
 #include "Utilities.h"
 #include "Pong.h"
+#include "Settings.h"
 
-HomeScreen::HomeScreen(SDL_Renderer* renderer)
+HomeScreen::HomeScreen(bool exit, SDL_Window* window, SDL_Renderer* renderer)
     : singlePlayerSelected{ false },
     multiPlayerSelected{ false },
     settingsSelected{ false },
     mouseClicked{ false },
     fontPath{ "resources/fonts/Tiny5-Regular.ttf" },
-    renderer{ renderer }
+    renderer{ renderer },
+    window{ window },
+    exit{ exit }
 {
     singlePlayerBtn = new MenuButton{};
     multiPlayerBtn = new MenuButton{};
     settingsBtn = new MenuButton{};
     // Initial render of the home screen texts eg "Pong" and "One Player"
-    render();
-
-    // Set button positions on the screen.
-    singlePlayerBtn->setButtonPosition(
-        (Pong::SCREEN_WIDTH / 2) - (singlePlayerBtn->WIDTH / 2),
-        (Pong::SCREEN_HEIGHT / 2));
-    multiPlayerBtn->setButtonPosition(
-        (Pong::SCREEN_WIDTH / 2) - (multiPlayerBtn->WIDTH / 2),
-        // Set to be underneath single player button.
-        (Pong::SCREEN_HEIGHT / 2 + singlePlayerBtn->HEIGHT));
-    settingsBtn->setButtonPosition(
-        (Pong::SCREEN_WIDTH / 2) - (settingsBtn->WIDTH / 2),
-        // Set to be underneath both single and multiplayer buttons
-        (Pong::SCREEN_HEIGHT / 2 + singlePlayerBtn->HEIGHT + multiPlayerBtn->HEIGHT));
+    generateText();
 }
 
 HomeScreen::~HomeScreen() {
@@ -37,7 +27,7 @@ HomeScreen::~HomeScreen() {
     SDL_DestroyTexture(SETTINGS_TEXTURE);
 };
 
-void HomeScreen::input(bool& exit) {
+void HomeScreen::input() {
     SDL_Event event;
     // Reset mouse clicked flag
     mouseClicked = false;
@@ -51,6 +41,17 @@ void HomeScreen::input(bool& exit) {
             if (event.type == SDL_MOUSEBUTTONDOWN) {
                 mouseClicked = true;
             }
+        }
+        if (event.type == SDL_KEYDOWN && event.key.keysym.sym == SDLK_F11) {
+            // Press F11 to enter/exit fullscreen mode
+            int flags = SDL_GetWindowFlags(window);
+            if (flags & SDL_WINDOW_FULLSCREEN) {
+                SDL_SetWindowFullscreen(window, 0);
+            }
+            else {
+                SDL_SetWindowFullscreen(window, SDL_WINDOW_FULLSCREEN);
+            }
+            break;
         }
     }
 }
@@ -80,7 +81,7 @@ void HomeScreen::update() {
     }
 }
 
-void HomeScreen::render() {
+void HomeScreen::generateText() {
     SDL_Color white{ 0xFF,0xFF,0xFF,0xFF };
     SDL_Color yellow{ 0xFF,0xFF,0x0,0xFF };
 
@@ -111,18 +112,60 @@ void HomeScreen::render() {
         settingsHighLighted ? yellow : white,
         32,
         renderer));
+
+    // Set button positions on the screen.
+    singlePlayerBtn->setButtonPosition(
+        (Settings::gameSettings.screenWidth / 2) - (singlePlayerBtn->WIDTH / 2),
+        (Settings::gameSettings.screenHeight / 2));
+    multiPlayerBtn->setButtonPosition(
+        (Settings::gameSettings.screenWidth / 2) - (multiPlayerBtn->WIDTH / 2),
+        // Set to be underneath single player button.
+        (Settings::gameSettings.screenHeight / 2 + singlePlayerBtn->HEIGHT));
+    settingsBtn->setButtonPosition(
+        (Settings::gameSettings.screenWidth / 2) - (settingsBtn->WIDTH / 2),
+        // Set to be underneath both single and multiplayer buttons
+        (Settings::gameSettings.screenHeight / 2 + singlePlayerBtn->HEIGHT + multiPlayerBtn->HEIGHT));
+
 }
 
-bool HomeScreen::isMouseInside(int mouseX, int mouseY, MenuButton* btn) {
+void HomeScreen::render() {
+    generateText();
+    SDL_SetRenderDrawColor(renderer, 0x0, 0x0, 0x0, 0xFF);
+    SDL_RenderClear(renderer);
 
-    if (mouseX < btn->getX() || mouseX > btn->getX() + btn->WIDTH) {
-        return false;
-    }
-    if (mouseY < btn->getY() || mouseY > btn->getY() + btn->HEIGHT) {
-        return false;
-    }
-    return true;
+    SDL_SetRenderDrawColor(renderer, 0xFF, 0xFF, 0xFF, 0xFF);
 
+    int pongTextWidth;
+    SDL_QueryTexture(PONG_TEXT, nullptr, nullptr, &pongTextWidth, nullptr);
+    renderTexture(PONG_TEXT, renderer, Settings::gameSettings.screenWidth / 2 - pongTextWidth / 2, Settings::gameSettings.screenHeight / 5);
+
+
+    // Render Single Player Text
+    renderTexture(
+        singlePlayerBtn->getTexture(),
+        renderer,
+        singlePlayerBtn->getX(),
+        singlePlayerBtn->getY()
+    );
+
+    // Render Multi Player Text
+    renderTexture(
+        multiPlayerBtn->getTexture(),
+        renderer,
+        multiPlayerBtn->getX(),
+        multiPlayerBtn->getY()
+    );
+
+    // Render Settings Text
+    renderTexture(
+        settingsBtn->getTexture(),
+        renderer,
+        settingsBtn->getX(),
+        settingsBtn->getY()
+    );
+    SDL_RenderPresent(renderer);
 }
+
+
 
 

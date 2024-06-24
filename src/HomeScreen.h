@@ -3,7 +3,7 @@
 
 #include "MenuButton.h"
 #include "Utilities.h"
-
+#include "Settings.h"
 #include <SDL2/SDL.h>
 
 #include <string>
@@ -13,16 +13,18 @@ private:
     const std::string fontPath;
     int mouseX;
     int mouseY;
+    bool& exit;
 
+    SDL_Window* window;
     SDL_Renderer* renderer;
     SDL_Texture* SINGLE_PLAYER_TEXT;
     SDL_Texture* MULTI_PLAYER_TEXT;
     SDL_Texture* SETTINGS_TEXTURE;
 
-    bool isMouseInside(int mouseX, int mouseY, MenuButton* btn);
+
 
 public:
-    HomeScreen(SDL_Renderer* renderer);
+    HomeScreen(bool exit, SDL_Window* window, SDL_Renderer* renderer);
     ~HomeScreen();
 
     SDL_Texture* PONG_TEXT;
@@ -39,8 +41,9 @@ public:
     MenuButton* multiPlayerBtn;
     MenuButton* settingsBtn;
 
-    void input(bool& exit);
+    void input();
     void update();
+    void generateText();
     void render();
 };
 

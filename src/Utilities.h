@@ -16,4 +16,8 @@ void renderTexture(SDL_Texture* texture
     , int y
     , SDL_Rect* clip = nullptr);
 
+
+SDL_Texture* renderTriangle(SDL_Renderer* renderer, SDL_Color color, int x, int y);
+
+bool isMouseInside(int& mouseX, int& mouseY, MenuButton* btn);
 #endif
