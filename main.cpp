@@ -1,45 +1,57 @@
-#include "main.h"
 #include "src/Pong.h"
 #include "src/HomeScreen.h"
 #include "src/SettingsScreen.h"
 
-#include <iostream>
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_ttf.h>
+#include <SDL2/SDL_mixer.h>
+
+#include <iostream>
+
+bool gExitProgram;
+bool gGameRunning;
+bool gSettingsOpen;
+
+SDL_Window* gWindow;
+SDL_Renderer* gRenderer;
+
+HomeScreen* homeScreen;
+Pong* pong;
+SettingsScreen* settingsScreen;
 
 void init() {
-    exitProgram = false;
-    gameRunning = false;
+    gExitProgram = false;
+    gGameRunning = false;
 
     SDL_Init(SDL_INIT_EVERYTHING);
     TTF_Init();
     Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 1024);
 
-    window = SDL_CreateWindow("Pong",
+    gWindow = SDL_CreateWindow("Pong",
         SDL_WINDOWPOS_UNDEFINED,
         SDL_WINDOWPOS_UNDEFINED,
         Settings::gameSettings.screenWidth,
         Settings::gameSettings.screenHeight,
         SDL_WINDOW_SHOWN);
 
-    renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
+    gRenderer = SDL_CreateRenderer(gWindow, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
 
     //Make sure this does not get created before TTF_Init() ever.
-    homeScreen = new HomeScreen(exitProgram, window, renderer);
-    pong = new Pong(exitProgram, gameRunning, window, renderer);
-    settingsScreen = new SettingsScreen(exitProgram, settingsOpen, window, renderer);
+    homeScreen = new HomeScreen(gExitProgram, gWindow, gRenderer);
+    pong = new Pong(gExitProgram, gGameRunning, gWindow, gRenderer);
+    settingsScreen = new SettingsScreen(gExitProgram, gSettingsOpen, gWindow, gRenderer);
 }
 
 
 void execute() {
-    while (!exitProgram) {
-        if (gameRunning) {
+    while (!gExitProgram) {
+        if (gGameRunning) {
             pong->input();
             pong->update();
             pong->renderGameplay();
             SDL_Delay(10);
         }
-        else if (settingsOpen) {
+        else if (gSettingsOpen) {
             settingsScreen->input();
             settingsScreen->update();
             settingsScreen->render();
@@ -51,11 +63,11 @@ void execute() {
             homeScreen->render();
             SDL_Delay(10);
             if (homeScreen->multiPlayerSelected || homeScreen->singlePlayerSelected) {
-                gameRunning = true;
+                gGameRunning = true;
                 pong->isTwoPlayerMode = homeScreen->multiPlayerSelected;
             }
             else if (homeScreen->settingsSelected) {
-                settingsOpen = true;
+                gSettingsOpen = true;
             }
         }
     }
@@ -63,8 +75,8 @@ void execute() {
 
 void cleanup() {
     // Cleanup
-    SDL_DestroyRenderer(renderer);
-    SDL_DestroyWindow(window);
+    SDL_DestroyRenderer(gRenderer);
+    SDL_DestroyWindow(gWindow);
 
     Mix_CloseAudio();
     SDL_Quit();
