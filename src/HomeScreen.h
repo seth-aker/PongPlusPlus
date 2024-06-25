@@ -27,7 +27,7 @@ public:
     HomeScreen(bool& exitProgram, SDL_Window* window, SDL_Renderer* renderer);
     ~HomeScreen();
 
-    SDL_Texture* PONG_TEXT;
+    SDL_Texture* PONG_TEXT = nullptr;
 
     bool singlePlayerSelected;
     bool multiPlayerSelected;

@@ -5,16 +5,22 @@
 #include <cmath>
 #include <vector>
 #include <array>
-SDL_Texture* renderText(const std::string& message
-    , const std::string& fontFile
-    , SDL_Color color
-    , int fontSize
-    , SDL_Renderer* renderer)
+
+SDL_Texture* renderText(const std::string& message,
+    const std::string& fontFile,
+    SDL_Color color,
+    int fontSize,
+    SDL_Renderer* renderer,
+    SDL_Texture* texture)
 {
+    //Destroys the previous frame's texture if the texture exists to prevent memory leakage.
+    if (texture) {
+        SDL_DestroyTexture(texture);
+    }
     TTF_Font* font = TTF_OpenFont(fontFile.c_str(), fontSize);
     SDL_Surface* surface = TTF_RenderText_Blended(font, message.c_str(), color);
 
-    SDL_Texture* texture = SDL_CreateTextureFromSurface(renderer, surface);
+    texture = SDL_CreateTextureFromSurface(renderer, surface);
 
     SDL_FreeSurface(surface);
     TTF_CloseFont(font);

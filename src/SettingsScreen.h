@@ -17,9 +17,9 @@ private:
     SDL_Window* window;
     SDL_Renderer* renderer;
 
-    SDL_Texture* SETTINGS_TEXT;
+    SDL_Texture* SETTINGS_TEXT = nullptr;
     int settingsTextWidth;
-    SDL_Texture* difficultyText;
+    SDL_Texture* difficultyText = nullptr;
 
     MenuButton* difficultyRight;
     bool difficultyRightHighlighted;

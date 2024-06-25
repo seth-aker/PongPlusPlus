@@ -130,7 +130,8 @@ void SettingsScreen::generateTextures() {
         fontPath,
         white,
         32,
-        renderer
+        renderer,
+        difficultyText
     );
     int difficultyTextWidth;
     int difficultyTextHeight;
@@ -158,6 +159,7 @@ void SettingsScreen::render() {
     int difficultyTextHeight;
     SDL_QueryTexture(difficultyText, NULL, NULL, &difficultyTextWidth, &difficultyTextHeight);
     renderTexture(difficultyText, renderer, Settings::gameSettings.screenWidth / 2 - difficultyTextWidth / 2, Settings::gameSettings.screenHeight / 2);
+
     renderTriangle(
         renderer,
         difficultyRightHighlighted ? yellow : white,

@@ -238,33 +238,36 @@ void Pong::renderGameplay() {
 
 
     if (leftScoreChanged) {
-        fontLeftScore = renderText(std::to_string(leftScore)
-            , fontName
-            , fontColor
-            , scoreFontSize
-            , renderer);
+        fontLeftScore = renderText(std::to_string(leftScore),
+            fontName,
+            fontColor,
+            scoreFontSize,
+            renderer,
+            fontLeftScore);
 
         leftScoreChanged = false;
     }
     renderTexture(fontLeftScore, renderer, Settings::gameSettings.screenWidth * 4 / 10, Settings::gameSettings.screenHeight / 12);
 
     if (rightScoreChanged) {
-        fontRightScore = renderText(std::to_string(rightScore)
-            , fontName
-            , fontColor
-            , scoreFontSize
-            , renderer);
+        fontRightScore = renderText(std::to_string(rightScore),
+            fontName,
+            fontColor,
+            scoreFontSize,
+            renderer,
+            fontRightScore);
 
         rightScoreChanged = false;
     }
     renderTexture(fontRightScore, renderer, Settings::gameSettings.screenWidth * 6 / 10 - scoreFontSize / 2, Settings::gameSettings.screenHeight / 12);
 
     if (leftScore >= 5) {
-        fontWinnerText = renderText("Player 2 won!"
-            , fontName
-            , fontColor
-            , winnerFontSize
-            , renderer
+        fontWinnerText = renderText("Player 2 won!",
+            fontName,
+            fontColor,
+            winnerFontSize,
+            renderer,
+            fontWinnerText
         );
         renderTexture(fontWinnerText, renderer, Settings::gameSettings.screenWidth / 10 + 3, Settings::gameSettings.screenHeight / 4, nullptr);
         if (ball->status == ball->LAUNCHED) {
@@ -276,11 +279,12 @@ void Pong::renderGameplay() {
     }
 
     if (rightScore >= 5) {
-        fontWinnerText = renderText("Player 1 won!"
-            , fontName
-            , fontColor
-            , winnerFontSize
-            , renderer
+        fontWinnerText = renderText("Player 1 won!",
+            fontName,
+            fontColor,
+            winnerFontSize,
+            renderer,
+            fontWinnerText
         );
         renderTexture(fontWinnerText, renderer, Settings::gameSettings.screenWidth / 10 + 3, Settings::gameSettings.screenHeight / 4, nullptr);
         if (ball->status == ball->LAUNCHED) {

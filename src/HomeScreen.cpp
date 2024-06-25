@@ -89,33 +89,38 @@ void HomeScreen::generateText() {
     SDL_Color white{ 0xFF,0xFF,0xFF,0xFF };
     SDL_Color yellow{ 0xFF,0xFF,0x0,0xFF };
 
-    PONG_TEXT = renderText(
-        "PONG",
-        fontPath,
-        white,
-        96,
-        renderer);
+    // Only create the texture once.
+    if (!PONG_TEXT)
+        PONG_TEXT = renderText(
+            "PONG",
+            fontPath,
+            white,
+            96,
+            renderer);
 
     singlePlayerBtn->setTexture(renderText(
         "One Player",
         fontPath,
         singlePlayerHighlighted ? yellow : white,
         32,
-        renderer));
+        renderer,
+        singlePlayerBtn->getTexture()));
 
     multiPlayerBtn->setTexture(renderText(
         "Two Players",
         fontPath,
         multiplayerHighlighted ? yellow : white,
         32,
-        renderer));
+        renderer,
+        multiPlayerBtn->getTexture()));
 
     settingsBtn->setTexture(renderText(
         "Settings",
         fontPath,
         settingsHighLighted ? yellow : white,
         32,
-        renderer));
+        renderer,
+        settingsBtn->getTexture()));
 
     // Set button positions on the screen.
     singlePlayerBtn->setButtonPosition(
