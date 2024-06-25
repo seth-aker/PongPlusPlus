@@ -2,6 +2,8 @@
 #define SRC_SETTINGS_H
 
 #include <SDL2/SDL.h>
+#include <map>
+#include <string>
 
 namespace Settings {
     enum Difficulty {

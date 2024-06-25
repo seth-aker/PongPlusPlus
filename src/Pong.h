@@ -35,9 +35,9 @@ private:
     int rightScore;
     bool leftScoreChanged;
     bool rightScoreChanged;
-    bool gameRunning;
+    bool& gameRunning;
 
-    bool exit;
+    bool& exitProgram;
 
     enum Buttons
     {
@@ -50,7 +50,7 @@ private:
 
 public:
     bool isTwoPlayerMode;
-    Pong(bool exit, SDL_Window* window, SDL_Renderer* renderer);
+    Pong(bool& exitProgram, bool& gameRunning, SDL_Window* window, SDL_Renderer* renderer);
     ~Pong();
     void input();
     void update();

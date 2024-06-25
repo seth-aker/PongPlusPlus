@@ -13,7 +13,7 @@ private:
     const std::string fontPath;
     int mouseX;
     int mouseY;
-    bool& exit;
+    bool& exitProgram;
 
     SDL_Window* window;
     SDL_Renderer* renderer;
@@ -24,7 +24,7 @@ private:
 
 
 public:
-    HomeScreen(bool exit, SDL_Window* window, SDL_Renderer* renderer);
+    HomeScreen(bool& exitProgram, SDL_Window* window, SDL_Renderer* renderer);
     ~HomeScreen();
 
     SDL_Texture* PONG_TEXT;

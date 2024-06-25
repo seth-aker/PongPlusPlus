@@ -10,11 +10,11 @@
 
 // Default settings
 
-Pong::Pong(bool exit, SDL_Window* window, SDL_Renderer* renderer)
+Pong::Pong(bool& exitProgram, bool& gameRunning, SDL_Window* window, SDL_Renderer* renderer)
     : leftScoreChanged{ true },
     rightScoreChanged{ true },
-    gameRunning{ false },
-    exit{ exit },
+    gameRunning{ gameRunning },
+    exitProgram{ exitProgram },
     window{ window },
     renderer(renderer)
 {
@@ -64,7 +64,7 @@ void Pong::input() {
 
     while (SDL_PollEvent(&event)) {
         if (event.type == SDL_QUIT) {
-            exit = true;
+            exitProgram = true;
         }
         // if keystroke down, set button pressed flag for a specific button to either pressed or not pressed.
         if (event.type == SDL_KEYDOWN) {
@@ -97,14 +97,16 @@ void Pong::input() {
                 }
                 break;
             case SDLK_F11:
-                // Press F11 to enter/exit fullscreen mode
-                int flags = SDL_GetWindowFlags(window);
+                // Press F11 to enter/exitProgram fullscreen mode
+                Uint32 flags = SDL_GetWindowFlags(window);
                 if (flags & SDL_WINDOW_FULLSCREEN) {
                     SDL_SetWindowFullscreen(window, 0);
+
                 }
                 else {
                     SDL_SetWindowFullscreen(window, SDL_WINDOW_FULLSCREEN);
                 }
+                SDL_GetWindowSize(window, &Settings::gameSettings.screenWidth, &Settings::gameSettings.screenHeight);
                 break;
 
             }

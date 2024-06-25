@@ -18,5 +18,6 @@ public:
     int getY();
     void setTexture(SDL_Texture* texture);
     SDL_Texture* getTexture();
+    void setButtonDimensions(int h, int w);
 };
 #endif

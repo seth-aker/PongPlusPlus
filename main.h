@@ -8,15 +8,16 @@
 #include <SDL2/SDL_ttf.h>
 #include <SDL2/SDL_mixer.h>
 
-bool exit;
+bool exitProgram;
 bool gameRunning;
+bool settingsOpen;
 
 SDL_Window* window;
 SDL_Renderer* renderer;
 
-HomeScreen homeScreen;
-Pong pong;
-SettingsScreen settingsScreen;
+HomeScreen* homeScreen;
+Pong* pong;
+SettingsScreen* settingsScreen;
 
 
 #endif

@@ -8,6 +8,7 @@ namespace Settings {
 
     // Default game settings;
     GameSettings gameSettings{ 480, 640, Difficulty::MEDIUM, PADDLE_SPEED / 2, 8 };
+
     void setDifficulty(Difficulty difficulty) {
         gameSettings.selectedDifficulty = difficulty;
         // Change the speed of the AI opponent's paddle and the ball to make it harder to score against it;

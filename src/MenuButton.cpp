@@ -28,3 +28,8 @@ SDL_Texture* MenuButton::getTexture() {
     return mTexture;
 }
 
+void MenuButton::setButtonDimensions(int h, int w) {
+    HEIGHT = h;
+    WIDTH = w;
+}
+

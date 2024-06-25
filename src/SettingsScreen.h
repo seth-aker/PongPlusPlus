@@ -7,7 +7,8 @@
 #include <string>
 class SettingsScreen {
 private:
-    bool& exit;
+    bool& exitProgram;
+    bool& settingsOpen;
     int mouseX;
     int mouseY;
     bool mouseClicked;
@@ -17,20 +18,24 @@ private:
     SDL_Renderer* renderer;
 
     SDL_Texture* SETTINGS_TEXT;
+    int settingsTextWidth;
     SDL_Texture* difficultyText;
 
     MenuButton* difficultyRight;
-    int difficultyRightHighlighted;
+    bool difficultyRightHighlighted;
+    bool difficultyRightSelected;
     MenuButton* difficultyLeft;
-    int difficultyLeftHighlighted;
-
+    bool difficultyLeftHighlighted;
+    bool difficultyLeftSelected;
 
 public:
-    SettingsScreen(bool& exit, SDL_Window* window, SDL_Renderer* renderer);
+    const SDL_Color white{ 0xFF,0xFF,0xFF,0xFF };
+    const SDL_Color yellow{ 0xFF,0xFF,0x0,0xFF };
+    SettingsScreen(bool& exitProgram, bool& settingsOpen, SDL_Window* window, SDL_Renderer* renderer);
     ~SettingsScreen();
     void input();
     void update();
-    void generateText();
+    void generateTextures();
     void render();
 
 

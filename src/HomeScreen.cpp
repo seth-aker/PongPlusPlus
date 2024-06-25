@@ -3,7 +3,7 @@
 #include "Pong.h"
 #include "Settings.h"
 
-HomeScreen::HomeScreen(bool exit, SDL_Window* window, SDL_Renderer* renderer)
+HomeScreen::HomeScreen(bool& exitProgram, SDL_Window* window, SDL_Renderer* renderer)
     : singlePlayerSelected{ false },
     multiPlayerSelected{ false },
     settingsSelected{ false },
@@ -11,7 +11,7 @@ HomeScreen::HomeScreen(bool exit, SDL_Window* window, SDL_Renderer* renderer)
     fontPath{ "resources/fonts/Tiny5-Regular.ttf" },
     renderer{ renderer },
     window{ window },
-    exit{ exit }
+    exitProgram{ exitProgram }
 {
     singlePlayerBtn = new MenuButton{};
     multiPlayerBtn = new MenuButton{};
@@ -34,7 +34,7 @@ void HomeScreen::input() {
 
     while (SDL_PollEvent(&event)) {
         if (event.type == SDL_QUIT) {
-            exit = true;
+            exitProgram = true;
         }
         if (event.type == SDL_MOUSEMOTION || event.type == SDL_MOUSEBUTTONDOWN) {
             SDL_GetMouseState(&mouseX, &mouseY);
@@ -42,16 +42,20 @@ void HomeScreen::input() {
                 mouseClicked = true;
             }
         }
-        if (event.type == SDL_KEYDOWN && event.key.keysym.sym == SDLK_F11) {
-            // Press F11 to enter/exit fullscreen mode
-            int flags = SDL_GetWindowFlags(window);
-            if (flags & SDL_WINDOW_FULLSCREEN) {
-                SDL_SetWindowFullscreen(window, 0);
+        if (event.type == SDL_KEYDOWN) {
+            if (event.key.keysym.sym == SDLK_F11) {
+                // Press F11 to enter/exitProgram fullscreen mode
+                int flags = SDL_GetWindowFlags(window);
+                if (flags & SDL_WINDOW_FULLSCREEN) {
+                    SDL_SetWindowFullscreen(window, 0);
+                }
+                else {
+                    SDL_SetWindowFullscreen(window, SDL_WINDOW_FULLSCREEN);
+                }
             }
-            else {
-                SDL_SetWindowFullscreen(window, SDL_WINDOW_FULLSCREEN);
+            else if (event.key.keysym.sym == SDLK_ESCAPE) {
+                exitProgram = true;
             }
-            break;
         }
     }
 }

@@ -1,23 +1,28 @@
 #ifndef SRC_UTILITIES_H
 #define SRC_UTILITIES_H
-
+#include "MenuButton.h"
 #include <SDL2/SDL.h>
 #include <string>
 
-SDL_Texture* renderText(const std::string& message
-    , const std::string& fontFile
-    , SDL_Color color
-    , int fontSize
-    , SDL_Renderer* renderer);
+SDL_Texture* renderText(const std::string& message,
+    const std::string& fontFile,
+    SDL_Color color,
+    int fontSize,
+    SDL_Renderer* renderer);
 
-void renderTexture(SDL_Texture* texture
-    , SDL_Renderer* renderer
-    , int x
-    , int y
-    , SDL_Rect* clip = nullptr);
+void renderTexture(SDL_Texture* texture,
+    SDL_Renderer* renderer,
+    int x,
+    int y,
+    SDL_Rect* clip = nullptr);
 
 
-SDL_Texture* renderTriangle(SDL_Renderer* renderer, SDL_Color color, int x, int y);
+void renderTriangle(SDL_Renderer* renderer,
+    SDL_Color color,
+    int sideLength,
+    int x,
+    int y,
+    bool pointsRight);
 
 bool isMouseInside(int& mouseX, int& mouseY, MenuButton* btn);
 #endif

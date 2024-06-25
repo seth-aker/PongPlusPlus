@@ -8,8 +8,8 @@
 #include <SDL2/SDL_ttf.h>
 
 void init() {
-    bool exit = false;
-    bool gameRunning = false;
+    exitProgram = false;
+    gameRunning = false;
 
     SDL_Init(SDL_INIT_EVERYTHING);
     TTF_Init();
@@ -25,29 +25,37 @@ void init() {
     renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
 
     //Make sure this does not get created before TTF_Init() ever.
-    HomeScreen homeScreen(exit, window, renderer);
-
-    Pong pong(exit, window, renderer);
-    //SettingsScreen settings(exit, renderer);
+    homeScreen = new HomeScreen(exitProgram, window, renderer);
+    pong = new Pong(exitProgram, gameRunning, window, renderer);
+    settingsScreen = new SettingsScreen(exitProgram, settingsOpen, window, renderer);
 }
 
 
 void execute() {
-    while (!exit) {
+    while (!exitProgram) {
         if (gameRunning) {
-            pong.input();
-            pong.update();
-            pong.renderGameplay();
+            pong->input();
+            pong->update();
+            pong->renderGameplay();
+            SDL_Delay(10);
+        }
+        else if (settingsOpen) {
+            settingsScreen->input();
+            settingsScreen->update();
+            settingsScreen->render();
             SDL_Delay(10);
         }
         else {
-            homeScreen.input();
-            homeScreen.update();
-            homeScreen.render();
+            homeScreen->input();
+            homeScreen->update();
+            homeScreen->render();
             SDL_Delay(10);
-            if (homeScreen.multiPlayerSelected || homeScreen.singlePlayerSelected) {
+            if (homeScreen->multiPlayerSelected || homeScreen->singlePlayerSelected) {
                 gameRunning = true;
-                pong.isTwoPlayerMode = homeScreen.multiPlayerSelected;
+                pong->isTwoPlayerMode = homeScreen->multiPlayerSelected;
+            }
+            else if (homeScreen->settingsSelected) {
+                settingsOpen = true;
             }
         }
     }
