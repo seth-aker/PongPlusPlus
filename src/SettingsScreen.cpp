@@ -62,6 +62,7 @@ void SettingsScreen::input() {
             }
             break;
         }
+        Settings::handleWindowEvent(event);
     }
 }
 

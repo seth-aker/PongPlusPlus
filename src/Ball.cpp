@@ -46,10 +46,10 @@ void Ball::bouncesOff(Paddle* paddle) {
     int sign = (this->x > Settings::gameSettings.screenWidth / 2 ? -1 : 1);
 
     // Distance in pixels from the bottom of the ball to the center of the paddle
-    double relativeY = ((y + BALL_SIZE / 2) - (paddle->getY() + (paddle->PADDLE_HEIGHT / 2)));
+    double relativeY = ((y + BALL_SIZE / 2) - (paddle->getY() + (paddle->paddleHeight / 2)));
 
     // position of ball relative to the paddle, normalized to between -1 and 1 by dividing by half the hight of the paddle, then multiplied by 75deg
-    angle = (((relativeY) / (paddle->PADDLE_HEIGHT / 2.0)) * 75.0);
+    angle = (((relativeY) / (paddle->paddleHeight / 2.0)) * 75.0);
 
     // Convert angle to Radian, find its cos() and multiply by the speed.
     dx = sign * speed * std::cos(angle * PI / 180.0f);
@@ -78,9 +78,9 @@ bool Ball::collidesWith(Paddle* paddle)
     int ballBottom = y + BALL_SIZE;
 
     int paddleLeft = paddle->getX();
-    int paddleRight = paddle->getX() + paddle->PADDLE_WIDTH;
+    int paddleRight = paddle->getX() + paddle->paddleWidth;
     int paddleTop = paddle->getY();
-    int paddleBottom = paddle->getY() + paddle->PADDLE_HEIGHT;
+    int paddleBottom = paddle->getY() + paddle->paddleHeight;
 
     // If the edges of the ball do not intersect with the edges of the paddle return false else return true.
     if (ballLeft >= paddleRight

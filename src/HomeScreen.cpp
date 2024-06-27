@@ -52,11 +52,13 @@ void HomeScreen::input() {
                 else {
                     SDL_SetWindowFullscreen(window, SDL_WINDOW_FULLSCREEN);
                 }
+                SDL_GetRendererOutputSize(renderer, &Settings::gameSettings.screenWidth, &Settings::gameSettings.screenHeight);
             }
             else if (event.key.keysym.sym == SDLK_ESCAPE) {
                 exitProgram = true;
             }
         }
+        Settings::handleWindowEvent(event);
     }
 }
 

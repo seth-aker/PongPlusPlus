@@ -8,7 +8,6 @@
 #include <SDL2/SDL_ttf.h>
 #include <SDL2/SDL_mixer.h>
 
-// Default settings
 
 Pong::Pong(bool& exitProgram, bool& gameRunning, SDL_Window* window, SDL_Renderer* renderer)
     : leftScoreChanged{ true },
@@ -26,9 +25,9 @@ Pong::Pong(bool& exitProgram, bool& gameRunning, SDL_Window* window, SDL_Rendere
     int ballCenterPosY = (Settings::gameSettings.screenHeight / 2) - (Ball::BALL_SIZE / 2);
 
     ball = new Ball{ ballCenterPosX, ballCenterPosY };
-    leftPaddle = new Paddle{ 40, (Settings::gameSettings.screenHeight / 2 - Paddle::PADDLE_HEIGHT / 2) };
-    rightPaddle = new Paddle{ (Settings::gameSettings.screenWidth - (40 + Paddle::PADDLE_WIDTH)),
-        (Settings::gameSettings.screenHeight / 2 - Paddle::PADDLE_HEIGHT / 2) };
+    leftPaddle = new Paddle{ 40, (Settings::gameSettings.screenHeight / 2 - Paddle::paddleHeight / 2) };
+    rightPaddle = new Paddle{ (Settings::gameSettings.screenWidth - (40 + Paddle::paddleWidth)),
+        (Settings::gameSettings.screenHeight / 2 - Paddle::paddleHeight / 2) };
 
     fontColor = { 0xFF, 0xFF, 0xFF, 0xFF };
     fontName = "resources/fonts/Tiny5-Regular.ttf";
@@ -106,7 +105,6 @@ void Pong::input() {
                 else {
                     SDL_SetWindowFullscreen(window, SDL_WINDOW_FULLSCREEN);
                 }
-                SDL_GetWindowSize(window, &Settings::gameSettings.screenWidth, &Settings::gameSettings.screenHeight);
                 break;
 
             }
@@ -216,15 +214,15 @@ void Pong::renderGameplay() {
     //Render Paddles 
     SDL_Rect paddleL = { leftPaddle->getX(),
         leftPaddle->getY(),
-        Paddle::PADDLE_WIDTH,
-        Paddle::PADDLE_HEIGHT };
+        leftPaddle->paddleWidth,
+        leftPaddle->paddleHeight };
 
     SDL_RenderFillRect(renderer, &paddleL);
 
     SDL_Rect paddleR = { rightPaddle->getX(),
        rightPaddle->getY(),
-       Paddle::PADDLE_WIDTH,
-       Paddle::PADDLE_HEIGHT };
+       rightPaddle->paddleWidth,
+       rightPaddle->paddleHeight };
 
     SDL_RenderFillRect(renderer, &paddleR);
 

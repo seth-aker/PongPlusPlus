@@ -1,4 +1,5 @@
 #include "Settings.h"
+#include "Paddle.h"
 
 // Global Settings 
 namespace Settings {
@@ -39,6 +40,7 @@ namespace Settings {
         case SDL_WINDOWEVENT_RESIZED:
             gameSettings.screenWidth = e.window.data1;
             gameSettings.screenHeight = e.window.data2;
+
             break;
 
             //Window minimized

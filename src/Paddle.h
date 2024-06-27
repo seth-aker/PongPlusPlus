@@ -7,8 +7,8 @@ private:
     int x;
     int y;
 public:
-    static const int PADDLE_HEIGHT;
-    static const int PADDLE_WIDTH;
+    static const int paddleHeight;
+    static const int paddleWidth;
 
     Paddle(int x, int y);
     int getX() const;
