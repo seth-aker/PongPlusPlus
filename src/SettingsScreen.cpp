@@ -62,14 +62,15 @@ void SettingsScreen::input() {
             }
             break;
         }
-        Settings::handleWindowEvent(event);
+
     }
 }
 
 void SettingsScreen::update() {
     difficultyLeftSelected = false;
     difficultyRightSelected = false;
-    difficultyLeftHighlighted = isMouseInside(mouseX, mouseY, difficultyLeft);
+    // In order for this to be checking the correct location, the left button's position must be moved over.
+    difficultyLeftHighlighted = isMouseInside(mouseX, mouseY, difficultyLeft, false);
     difficultyRightHighlighted = isMouseInside(mouseX, mouseY, difficultyRight);
 
     if (mouseClicked) {
@@ -139,11 +140,11 @@ void SettingsScreen::generateTextures() {
 
     SDL_QueryTexture(difficultyText, NULL, NULL, &difficultyTextWidth, &difficultyTextHeight);
 
-    // Setting position and dimensions of the buttons to match the center of the difficulty text. See line 104;
-    difficultyRight->setButtonPosition(Settings::gameSettings.screenWidth / 2 + difficultyTextWidth, Settings::gameSettings.screenHeight / 2 + (difficultyTextHeight / 2));
-    // I am well aware that my code is turning into spaghetti at this point but I don't care anymore. Leave me alone. The button height is the side of the triangle so multiplying by sin(60deg) gets you the "width" 
+
+    difficultyRight->setButtonPosition(Settings::gameSettings.screenWidth / 2 + (difficultyTextWidth), Settings::gameSettings.screenHeight / 2);
+    // The button height is the length of a side of the triangle so multiplying by sin(60deg) gets you the "width" 
     difficultyRight->setButtonDimensions(difficultyTextHeight, difficultyTextHeight * -sin(60.0f));
-    difficultyLeft->setButtonPosition(Settings::gameSettings.screenWidth / 2 - difficultyTextWidth, Settings::gameSettings.screenHeight / 2 + (difficultyTextHeight / 2));
+    difficultyLeft->setButtonPosition(Settings::gameSettings.screenWidth / 2 - (difficultyTextWidth), Settings::gameSettings.screenHeight / 2);
     difficultyLeft->setButtonDimensions(difficultyTextHeight, difficultyTextHeight * -sin(60.0f));
 }
 

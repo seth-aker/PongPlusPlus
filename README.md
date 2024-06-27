@@ -13,7 +13,7 @@ A simple program written in C++ using SDL2 Libraries to play Pong
 
 - Right hand paddle is controlled with Arrow Keys
 - Left hand paddle is controlled with W and S (in two player mode)
-- Press ESC to exit return to main menu
+- Press ESC to exit/return to main menu
 - Press F11 to enter full screen mode.
 - Settings menu can change difficulty.
 

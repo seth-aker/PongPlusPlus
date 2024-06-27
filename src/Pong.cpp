@@ -32,7 +32,7 @@ Pong::Pong(bool& exitProgram, bool& gameRunning, SDL_Window* window, SDL_Rendere
     fontColor = { 0xFF, 0xFF, 0xFF, 0xFF };
     fontName = "resources/fonts/Tiny5-Regular.ttf";
 
-    fontStartText = renderText("Press SPACE to start", fontName, fontColor, 12, renderer);
+    fontStartText = renderText("Press SPACE to start", fontName, fontColor, 24, renderer);
     leftScore = 0;
     rightScore = 0;
 
@@ -130,7 +130,6 @@ void Pong::input() {
 
             }
         }
-        Settings::handleWindowEvent(event);
     }
 }
 

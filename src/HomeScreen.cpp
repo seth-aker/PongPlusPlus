@@ -58,7 +58,7 @@ void HomeScreen::input() {
                 exitProgram = true;
             }
         }
-        Settings::handleWindowEvent(event);
+
     }
 }
 

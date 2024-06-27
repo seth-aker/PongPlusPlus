@@ -25,5 +25,5 @@ void renderTriangle(SDL_Renderer* renderer,
     int y,
     bool pointsRight);
 
-bool isMouseInside(int& mouseX, int& mouseY, MenuButton* btn);
+bool isMouseInside(const int mouseX, const int mouseY, MenuButton* btn, const bool pointsRight = true);
 #endif
